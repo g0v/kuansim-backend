@@ -1,0 +1,18 @@
+{
+  "host": "http://localhost:3000",
+  "logout_redirect": "/",
+  "auth_providers": {
+    "facebook": {
+      "clientID": "test"
+      "clientSecret": "test"
+    },
+    "twitter": {
+      "consumerKey": "twitterkey",
+      "consumerSecret": "twittersecuret"
+    },
+    "google": {
+      "consumerKey": "googlekey",
+      "consumerSecret": "gsecret"
+    }
+  }
+}
