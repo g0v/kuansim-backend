@@ -1,4 +1,6 @@
 require! trycatch
+require! passport
+
 export function route (path, fn)
   (req, resp) ->
     # TODO: Content-Negotiate into CSV
@@ -127,3 +129,33 @@ export function mount-default (plx, schema, _route=route, cb)
   _route '/runCommand' -> throw "Not implemented yet"
 
   cb cols
+
+export function mount-auth (app, config)
+  #@FIXME: add acl in db level.
+  users = {}
+  for provider_name, provider_cfg of config.auth_providers
+    # passport settings
+    provider_cfg['callbackURL'] = "#{config.host}/auth/#{provider_name}/callback"    
+    cb_after_auth = (token, tokenSecret, profile, done) ->
+      users[profile.id] = profile
+      done null, profile
+    module_name = switch provider_name
+                  case \google then "passport-google-oauth"
+                  default "passport-#{provider_name}"
+    _Strategy = require(module_name).Strategy
+    passport.use new _Strategy provider_cfg, cb_after_auth
+    passport.serializeUser (user, done) -> done null, user
+    passport.deserializeUser (id, done) -> done null, id
+
+    # express settings
+    app.use passport.initialize!
+    app.use passport.session!
+    app.get "/auth/#{provider_name}", (passport.authenticate "#{provider_name}", provider_cfg.scope)
+    _auth = passport.authenticate "#{provider_name}", {successRedirect: '/', failureRedirect: "/auth/#{provider_name}"}
+    app.get "/auth/#{provider_name}/callback", _auth
+    app.get "/login", (req, res) -> res.send "<a href='/auth/facebook'>login with facebook</a>"
+    app.get "/logout", (req, res) -> req.logout!; res.redirect config.logout_redirect
+
+    #@FIXME: setup protected resource
+    app.all "/collections", (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
+  app
