@@ -24,23 +24,18 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": [
-    {
-      "optimist": "0.3.x",
-      "trycatch": "0.2.x",
-      "plv8x": "0.5.x",
-      "express": "3.1.x",
-      "cors": "0.0.x",
-      "connect-csv": "*",
-      "passport": "*"
-    },
-    "passport-facebook:",
-    "*",
-    "passport-twitter:",
-    "*",
-    "passport-google-oauth:",
-    "*"
-  ],
+  "dependencies": {
+    "optimist": "0.3.x",
+    "trycatch": "0.2.x",
+    "plv8x": "0.5.x",
+    "express": "3.1.x",
+    "cors": "0.0.x",
+    "connect-csv": "*",
+    "passport": "*",
+    "passport-facebook": "*",
+    "passport-twitter": "*",
+    "passport-google-oauth": "*"
+  },
   "devDependencies": {
     "mocha": "*",
     "supertest": "0.7.x",

@@ -34,9 +34,9 @@ dependencies:
   cors: \0.0.x
   \connect-csv : \*
   passport: \*
-  \passport-facebook: \*
-  \passport-twitter: \*
-  \passport-google-oauth: \*
+  'passport-facebook': \*
+  'passport-twitter': \*
+  'passport-google-oauth': \*
 devDependencies:
   mocha: \*
   supertest: \0.7.x
