@@ -29,8 +29,10 @@ require! \connect-csv
 app.use express.json!
 app.use connect-csv header: \guess
 
+if config.enable_auth? and config.enable_auth
+  app = mount-auth plx, app, config
+
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
-  mount-auth plx, app, config
   app.all path, cors!, r
 
 
