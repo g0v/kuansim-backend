@@ -32,7 +32,6 @@ app.use express.logger!
 
 # express passport settings
 if config.enable_auth? and config.enable_auth
-  require! passport
   mount-auth plx, app, config
 
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
