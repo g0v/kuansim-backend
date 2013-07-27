@@ -159,17 +159,20 @@ export function mount-auth (plx, app, config)
     passport.serializeUser (user, done) -> done null, user
     passport.deserializeUser (id, done) -> done null, id
 
-    # express settings
-    app.use passport.initialize!
-    app.use passport.session!
+    # register auth endpoint
     app.get "/auth/#{provider_name}", (passport.authenticate "#{provider_name}", provider_cfg.scope)
     _auth = passport.authenticate "#{provider_name}", {successRedirect: '/', failureRedirect: "/auth/#{provider_name}"}
     app.get "/auth/#{provider_name}/callback", _auth
-    app.get "/login", (req, res) -> res.send "<a href='/auth/facebook'>login with facebook</a>"
-    app.get "/logout", (req, res) -> req.logout!; res.redirect config.logout_redirect
 
-    #@FIXME: setup protected resource
-    ensure_authed = (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
-    app.all "/my/*", ensure_authed
-    app.all "/collections/*", ensure_authed
+  # express passport settings
+  app.use passport.initialize!
+  app.use passport.session!
+  
+  ensure_authed = (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
+  app.get "/login", (req, res) -> res.send "<a href='/auth/facebook'>login with facebook</a>"
+  app.get "/logout", (req, res) -> req.logout!; res.redirect config.logout_redirect
+
+  for endpoint in config['protected_resources']
+    app.all endpoint, ensure_authed
+    console.log "#{endpoint} is protected"
   app
