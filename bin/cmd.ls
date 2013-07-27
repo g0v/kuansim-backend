@@ -60,7 +60,8 @@ ensure_authz = (req, res, next) ->
     <- plx.query '''select pgrest_param('{}'::json)'''
   next!
 
-cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
+schema = argv.schema ? config.schema? 
+cols <- mount-default plx, schema, with-prefix prefix, (path, r) ->
   args = [ensure_authz, r]
   args.unshift cors! if argv.cors
   args.unshift path
