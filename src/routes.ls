@@ -1,5 +1,6 @@
 require! trycatch
 require! passport
+require! express
 
 export function route (path, fn)
   (req, resp) ->
@@ -131,11 +132,18 @@ export function mount-default (plx, schema, _route=route, cb)
   cb cols
 
 export function mount-auth (plx, app, config)
+  app.use express.cookieParser!
+  app.use express.bodyParser!
+  app.use express.methodOverride!
+  app.use express.session secret: 'test'  
+  app.use passport.initialize!
+  app.use passport.session!
+
   #@FIXME: add acl in db level.
   for provider_name, provider_cfg of config.auth_providers
     console.log "enable auth #{provider_name}"
     # passport settings
-    provider_cfg['callbackURL'] = "#{config.host}/auth/#{provider_name}/callback"    
+    provider_cfg['callbackURL'] = "#{config.host}/auth/#{provider_name}/callback"
     cb_after_auth = (token, tokenSecret, profile, done) ->
       user = do
         provider_name: profile.provider
@@ -150,6 +158,8 @@ export function mount-auth (plx, app, config)
       if res.paging.count == 0
         res <- plx.query "select pgrest_insert($1)", [collection: \users, $: [user]]
         console.log res
+      user.auth_id = res.entries[0]['_id']
+      console.log user
       done null, user
     module_name = switch provider_name
                   case \google then "passport-google-oauth"
@@ -164,15 +174,10 @@ export function mount-auth (plx, app, config)
     _auth = passport.authenticate "#{provider_name}", {successRedirect: '/', failureRedirect: "/auth/#{provider_name}"}
     app.get "/auth/#{provider_name}/callback", _auth
 
-  # express passport settings
-  app.use passport.initialize!
-  app.use passport.session!
-  
-  ensure_authed = (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
+  ensure_authed = (req, res, next) -> console.log req.user; if req.isAuthenticated! then next! else res.redirect '/login'
   app.get "/login", (req, res) -> res.send "<a href='/auth/facebook'>login with facebook</a>"
   app.get "/logout", (req, res) -> req.logout!; res.redirect config.logout_redirect
 
   for endpoint in config['protected_resources']
     app.all endpoint, ensure_authed
     console.log "#{endpoint} is protected"
-  app

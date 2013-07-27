@@ -29,12 +29,13 @@ require! \connect-csv
 app.use express.json!
 app.use connect-csv header: \guess
 
+# express passport settings
 if config.enable_auth? and config.enable_auth
-  app = mount-auth plx, app, config
+  require! passport
+  mount-auth plx, app, config
 
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
   app.all path, cors!, r
-
 
 app.listen port, host
 console.log "Available collections:\n#{ cols * ' ' }"
