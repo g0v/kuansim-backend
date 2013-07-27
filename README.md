@@ -60,6 +60,43 @@ npm i
 npm run test
 ```
 
+# Set auth
+
+it supports 3 auth provider
+
+- facebook-openid
+- twitter-oauth
+- google-oauth
+
+create a config
+
+```
+mv config.ls.template config.ls
+```
+
+modify config.ls to add provider keys.
+```
+enable_auth: true
+logout_redirect: "/"
+auth_providers:
+  facebook:
+    clientID: "app id"
+    clientSecret: "app key"
+  twitter:
+    consumerKey: null
+    consumerSecret: null
+  google:
+    consumerKey: null
+    consumerSecret: null
+
+``
+
+re-compile
+
+```
+npm run prepublish
+```
+
 # Web server support
 
 * Perl: [Plack::App::PgREST](https://github.com/clkao/Plack-App-PgREST)

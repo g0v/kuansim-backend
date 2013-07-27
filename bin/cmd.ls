@@ -1,5 +1,7 @@
 ``#!/usr/bin/env node``
 require! {optimist, plv8x}
+config = require '../config.json'
+
 {argv} = optimist
 conString = argv.db or process.env['PLV8XCONN'] or process.env['PLV8XDB'] or process.env.TESTDBNAME or process.argv?2
 unless conString
@@ -14,7 +16,7 @@ if pgsock
 
 pgrest = require \..
 plx <- pgrest .new conString, {}
-{mount-default,with-prefix} = pgrest.routes!
+{mount-default, mount-auth, with-prefix} = pgrest.routes!
 
 process.exit 0 if argv.boot
 {port=3000, prefix="/collections", host="127.0.0.1"} = argv
@@ -27,8 +29,12 @@ require! \connect-csv
 app.use express.json!
 app.use connect-csv header: \guess
 
+if config.enable_auth? and config.enable_auth
+  app = mount-auth plx, app, config
+
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
   app.all path, cors!, r
+
 
 app.listen port, host
 console.log "Available collections:\n#{ cols * ' ' }"

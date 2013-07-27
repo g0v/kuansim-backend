@@ -16,11 +16,13 @@ scripts:
     env PATH="./node_modules/.bin:$PATH" mocha
   """
   prepublish: """
+    env PATH="./node_modules/.bin:$PATH" lsc -cj config.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -cj package.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
   """
   postinstall: """
+    env PATH="./node_modules/.bin:$PATH" lsc -cj config.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -cj package.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
@@ -33,6 +35,10 @@ dependencies:
   express: \3.1.x
   cors: \0.0.x
   \connect-csv : \*
+  passport: \*
+  'passport-facebook': \*
+  'passport-twitter': \*
+  'passport-google-oauth': \*
 devDependencies:
   mocha: \*
   supertest: \0.7.x
