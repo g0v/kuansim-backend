@@ -30,8 +30,9 @@ app.use express.json!
 app.use connect-csv header: \guess
 
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
-  mount-auth app, config
+  mount-auth plx, app, config
   app.all path, cors!, r
+
 
 app.listen port, host
 console.log "Available collections:\n#{ cols * ' ' }"

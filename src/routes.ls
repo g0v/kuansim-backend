@@ -130,15 +130,27 @@ export function mount-default (plx, schema, _route=route, cb)
 
   cb cols
 
-export function mount-auth (app, config)
+export function mount-auth (plx, app, config)
   #@FIXME: add acl in db level.
-  users = {}
   for provider_name, provider_cfg of config.auth_providers
+    console.log "enable auth #{provider_name}"
     # passport settings
     provider_cfg['callbackURL'] = "#{config.host}/auth/#{provider_name}/callback"    
     cb_after_auth = (token, tokenSecret, profile, done) ->
-      users[profile.id] = profile
-      done null, profile
+      user = do
+        provider_name: profile.provider
+        provider_id: profile.id
+        username: profile.username
+        name: profile.name
+        emails: profile.emails
+        photos: profile.photos
+      console.log "user #{user.username} authzed by #{user.provider_name}.#{user.provider_id}"
+      param = [collection: \users, q:{provider_id:user.provider_id, provider_name:user.provider_name}]
+      [pgrest_select:res] <- plx.query "select pgrest_select($1)", param
+      if res.paging.count == 0
+        res <- plx.query "select pgrest_insert($1)", [collection: \users, $: [user]]
+        console.log res
+      done null, user
     module_name = switch provider_name
                   case \google then "passport-google-oauth"
                   default "passport-#{provider_name}"
@@ -157,5 +169,7 @@ export function mount-auth (app, config)
     app.get "/logout", (req, res) -> req.logout!; res.redirect config.logout_redirect
 
     #@FIXME: setup protected resource
-    app.all "/collections", (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
+    ensure_authed = (req, res, next) -> if req.isAuthenticated! then next! else res.redirect '/login'
+    app.all "/my/*", ensure_authed
+    app.all "/collections/*", ensure_authed
   app

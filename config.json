@@ -1,18 +1,22 @@
 {
   "host": "http://localhost:3000",
+  "contact": {
+    "name": "Chen Hsin-Yi",
+    "email": "test@null.com"
+  },
   "logout_redirect": "/",
   "auth_providers": {
     "facebook": {
-      "clientID": "test"
-      "clientSecret": "test"
+      "clientID": null,
+      "clientSecret": null
     },
     "twitter": {
-      "consumerKey": "twitterkey",
-      "consumerSecret": "twittersecuret"
+      "consumerKey": null,
+      "consumerSecret": null
     },
     "google": {
-      "consumerKey": "googlekey",
-      "consumerSecret": "gsecret"
+      "consumerKey": null,
+      "consumerSecret": null
     }
   }
 }
