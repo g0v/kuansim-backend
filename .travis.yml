@@ -21,15 +21,10 @@ before_script:
 script:
   - "TESTDBNAME=test npm run test"
 
-notifications:
-  irc: "irc.freenode.org#pgrest"
-
 language: node_js
 
 env:
   - PGVERSION=9.2
-  - PGVERSION=9.1
-  - PGVERSION=9.0
 
 node_js:
   - 0.10
