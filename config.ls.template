@@ -7,6 +7,7 @@ contact:
   email: "test@null.com"
 
 # Auth
+enable_auth: true
 logout_redirect: "/"
 auth_providers:
   facebook:
