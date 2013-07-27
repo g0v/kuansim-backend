@@ -28,14 +28,47 @@ require! \connect-csv
 
 app.use express.json!
 app.use connect-csv header: \guess
-app.use express.logger!
+#app.use express.logger!
 
 # express passport settings
 if config.enable_auth? and config.enable_auth
+  require! passport
+  app.use express.cookieParser!
+  app.use express.bodyParser!
+  app.use express.methodOverride!
+  app.use express.session secret: 'test'  
+  app.use passport.initialize!
+  app.use passport.session!
   mount-auth plx, app, config
 
+# define user-fun
+<- plx.mk-user-func "pgrest_param():json" ':~> plv8x.context'
+<- plx.mk-user-func "pgrest_param(text):int" ':~> plv8x.context?[it]'
+<- plx.mk-user-func "pgrest_param(text):text" ':~> plv8x.context?[it]'
+<- plx.mk-user-func "pgrest_param(json):json" ':~> plv8x.context = it'
+# init session
+<- plx.query '''select pgrest_param('{}'::json)'''
+
+ensure_authz = (req, res, next) ->
+  console.log "auth checking"
+  if req.isAuthenticated!
+    session = req.session
+    console.log "#{req.path} user is authzed. init db sesion"
+    <- plx.query "select pgrest_param($1::json)", [{session}]
+  else
+    console.log "#{req.path} user is not authzed. reset db session"
+    <- plx.query '''select pgrest_param('{}'::json)'''
+  next!
+
 cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
-  app.all path, cors!, r
+  args = [ensure_authz, r]
+  args.unshift cors! if argv.cors
+  args.unshift path
+  app.all ...args
+  # for debug
+  app.get '/isauthz', pgparam, (req, res) ->
+    [pgrest_param:result] <- plx.query '''select pgrest_param()'''
+    res.send result          
 
 app.listen port, host
 console.log "Available collections:\n#{ cols * ' ' }"
