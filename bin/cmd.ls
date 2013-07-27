@@ -28,6 +28,7 @@ require! \connect-csv
 
 app.use express.json!
 app.use connect-csv header: \guess
+app.use express.logger!
 
 # express passport settings
 if config.enable_auth? and config.enable_auth
