@@ -1,7 +1,7 @@
 pgrest
 ======
 
-[![Build Status](https://travis-ci.org/clkao/pgrest.png?branch=master)](https://travis-ci.org/clkao/pgrest)
+[![Build Status](https://travis-ci.org/g0v/kuansim-backend.png?branch=master)](https://travis-ci.org/g0v/kuansim-backend)
 
 WARNING: this is work in progress and everything is likely to change!
 
