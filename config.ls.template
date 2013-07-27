@@ -19,7 +19,3 @@ auth_providers:
   google:
     consumerKey: null
     consumerSecret: null
-protected_resources:
-  * "/collections/"
-  * "/collections/*"
-
