@@ -42,6 +42,7 @@ if config.enable_auth? and config.enable_auth
   mount-auth plx, app, config
 
 # define user-fun
+<- plx.mk-user-func "getauth():int" ':~> throw "err" unless plv8x.context.auth; plv8x.context.auth.auth_id'
 <- plx.mk-user-func "pgrest_param():json" ':~> plv8x.context'
 <- plx.mk-user-func "pgrest_param(text):int" ':~> plv8x.context?[it]'
 <- plx.mk-user-func "pgrest_param(text):text" ':~> plv8x.context?[it]'
@@ -52,9 +53,8 @@ if config.enable_auth? and config.enable_auth
 ensure_authz = (req, res, next) ->
   console.log "auth checking"
   if req.isAuthenticated!
-    session = req.session
     console.log "#{req.path} user is authzed. init db sesion"
-    <- plx.query "select pgrest_param($1::json)", [{session}]
+    <- plx.query "select pgrest_param($1::json)", [{auth:req.user}]
   else
     console.log "#{req.path} user is not authzed. reset db session"
     <- plx.query '''select pgrest_param('{}'::json)'''
@@ -66,8 +66,10 @@ cols <- mount-default plx, argv.schema, with-prefix prefix, (path, r) ->
   args.unshift path
   app.all ...args
   # for debug
-  app.get '/isauthz', pgparam, (req, res) ->
+  app.get '/isauthz', ensure_authz, (req, res) ->
     [pgrest_param:result] <- plx.query '''select pgrest_param()'''
+    row? <- plx.query "select getauth()"
+    console.log row
     res.send result          
 
 app.listen port, host
