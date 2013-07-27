@@ -42,7 +42,7 @@ if config.enable_auth? and config.enable_auth
   mount-auth plx, app, config
 
 # define user-fun
-<- plx.mk-user-func "getauth():int" ':~> throw "err" unless plv8x.context.auth; plv8x.context.auth.auth_id'
+<- plx.mk-user-func "getauth():json" ':~> throw "err" unless plv8x.context.auth; plv8x.context.auth'
 <- plx.mk-user-func "pgrest_param():json" ':~> plv8x.context'
 <- plx.mk-user-func "pgrest_param(text):int" ':~> plv8x.context?[it]'
 <- plx.mk-user-func "pgrest_param(text):text" ':~> plv8x.context?[it]'
