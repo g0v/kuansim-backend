@@ -149,11 +149,12 @@ export function mount-auth (plx, app, config)
       emails: profile.emails
       photos: profile.photos
     console.log "user #{user.username} authzed by #{user.provider_name}.#{user.provider_id}"
+    #@FIXME: 
     param = [collection: \users, q:{provider_id:user.provider_id, provider_name:user.provider_name}]
     [pgrest_select:res] <- plx.query "select pgrest_select($1)", param
     if res.paging.count == 0
-      res <- plx.query "select pgrest_insert($1)", [collection: \users, $: [user]]
-      console.log res
+      [pgrest_insert:res] <- plx.query "select pgrest_insert($1)", [collection: \users, $: [user]]    
+    [pgrest_select:res] <- plx.query "select pgrest_select($1)", param
     user.auth_id = res.entries[0]['_id']
     console.log user
     done null, user
