@@ -42,7 +42,7 @@ if config.enable_auth? and config.enable_auth
   mount-auth plx, app, config
 
 # define user-fun
-<- plx.mk-user-func "getauth():json" ':~> throw "err" unless plv8x.context.auth; plv8x.context.auth'
+<- plx.mk-user-func "getauth():int" ':~> throw "logged out" unless plv8x.context.auth; plv8x.context.auth.auth_id'
 <- plx.mk-user-func "pgrest_param():json" ':~> plv8x.context'
 <- plx.mk-user-func "pgrest_param(text):int" ':~> plv8x.context?[it]'
 <- plx.mk-user-func "pgrest_param(text):text" ':~> plv8x.context?[it]'
@@ -60,7 +60,37 @@ ensure_authz = (req, res, next) ->
     <- plx.query '''select pgrest_param('{}'::json)'''
   next!
 
-schema = argv.schema ? config.schema ? 
+schema = argv.schema or config.schema
+console.log "schema: #{schema}"
+
+<- plx.query """
+DO $$
+BEGIN
+    IF NOT EXISTS(
+        SELECT schema_name
+          FROM information_schema.schemata
+          WHERE schema_name = '#{schema}'
+      )
+    THEN
+      EXECUTE 'CREATE SCHEMA #{schema}';
+    END IF;
+END
+$$;
+
+CREATE OR REPLACE VIEW kuansim.inbox AS
+  WITH auth as (select getauth() as auth_id)
+  SELECT * FROM public.bookmarks WHERE in_inbox=true AND author_id=(SELECT auth_id FROM auth);
+"""
+
+expose_simple_views = (plx, schema, names) ->
+  names.map ->
+    name = it
+    plx.query """
+      CREATE OR REPLACE VIEW #{schema}.#{name} AS
+        SELECT * FROM public.#{name};
+  """
+expose_simple_views plx, schema, ['bookmarks', 'news', 'tags', 'webpages']
+
 cols <- mount-default plx, schema, with-prefix prefix, (path, r) ->
   args = [ensure_authz, r]
   args.unshift cors! if argv.cors
