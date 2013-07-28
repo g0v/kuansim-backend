@@ -31,4 +31,8 @@ node_js:
 
 notifications:
   hipchat:
+    format: html
+    template:
+    - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
+    rooms:
     - secure: "ostn5QjCv+PchTIlhbnlQUe90tcNMhYGq7La/skJ8qkqvzzTy+USisVgh3vAV5cV4CqpZToBpMxmQs3CxNvBVnzEWlzgTyGsYT1QonXSB1taoaBiXqWBPMWlKwAUp8Z0XkdNgdjh6uC6f386qmenqq0WKzeJu2iADPxj7Qe8prE="
