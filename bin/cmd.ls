@@ -15,7 +15,8 @@ if pgsock
     database: conString
 
 pgrest = require \..
-plx <- pgrest .new conString, {}
+plx <- pgrest .new conString, meta: do
+  'kuansim.tags': {+q}
 {mount-default, mount-auth, with-prefix} = pgrest.routes!
 
 process.exit 0 if argv.boot
@@ -82,14 +83,25 @@ CREATE OR REPLACE VIEW kuansim.inbox AS
   SELECT * FROM public.bookmarks WHERE in_inbox=true AND author_id=(SELECT auth_id FROM auth);
 """
 
-expose_simple_views = (plx, schema, names) ->
+define-user-views = (plx, schema, names) ->
   names.map ->
     name = it
-    plx.query """
-      CREATE OR REPLACE VIEW #{schema}.#{name} AS
-        SELECT * FROM public.#{name};
-  """
-expose_simple_views plx, schema, ['bookmarks', 'news', 'tags', 'webpages']
+    console.log name
+    sql = """
+    CREATE OR REPLACE VIEW #{schema}.#{name} AS
+      SELECT * FROM public.#{name};
+    """
+    <- plx.query sql
+
+define-user-views plx, schema, ['bookmarks', 'tags', 'news', 'webpages']
+
+# tags
+<- plx.query """
+CREATE OR REPLACE RULE tags_add AS ON INSERT TO kuansim.tags
+  DO INSTEAD
+  WITH auth as (select getauth() as auth_id)
+  INSERT INTO public.tags (name, author_id) VALUES(NEW.name, (SELECT auth_id FROM auth));
+"""
 
 cols <- mount-default plx, schema, with-prefix prefix, (path, r) ->
   args = [ensure_authz, r]
