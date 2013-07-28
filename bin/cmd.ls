@@ -1,13 +1,19 @@
 ``#!/usr/bin/env node``
-require! {optimist, plv8x}
-config = require '../config.json'
+require! {optimist, plv8x, path}
+
 
 {argv} = optimist
-conString = argv.db or process.env['PLV8XCONN'] or process.env['PLV8XDB'] or process.env.TESTDBNAME or process.argv?2
+if argv.config
+  config = require (path.resolve argv.config)
+else
+  config = require '../config.json'
+
+conString = argv.db or process.env['PLV8XCONN'] or process.env['PLV8XDB'] or config['db'] or process.env.TESTDBNAME or process.argv?2
 unless conString
   console.log "ERROR: Please set the PLV8XDB environment variable, or pass in a connection string as an argument"
   process.exit!
 {pgsock} = argv
+
 
 if pgsock
   conString = do
