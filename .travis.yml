@@ -29,3 +29,7 @@ env:
 node_js:
   - 0.10
 
+notifications:
+  hipchat:
+	- secure: "ostn5QjCv+PchTIlhbnlQUe90tcNMhYGq7La/skJ8qkqvzzTy+USisVgh3vAV5cV4CqpZToBpMxmQs3CxNvBVnzEWlzgTyGsYT1QonXSB1taoaBiXqWBPMWlKwAUp8Z0XkdNgdjh6uC6f386qmenqq0WKzeJu2iADPxj7Qe8prE="
+    format: html
