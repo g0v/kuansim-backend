@@ -97,6 +97,3 @@ re-compile
 npm run prepublish
 ```
 
-# Web server support
-
-* Perl: [Plack::App::PgREST](https://github.com/clkao/Plack-App-PgREST)
