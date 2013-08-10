@@ -28,6 +28,10 @@ scripts:
     env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
   """
+  start:"""
+    env PATH="./node_modules/.bin:$PATH" npm run prepublish
+    env PATH="./node_modules/.bin:$PATH" ./node_modules/.bin/lsc bin/cmd.ls
+  """
 engines: {node: '*'}
 dependencies:
   optimist: \0.3.x
