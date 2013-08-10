@@ -8,6 +8,9 @@ See [git-flow cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/)
 *   All new code shall be push to `develop` branch
 *   Release manager will merge `develop` to `master`
 
+# Report Issue
+Please report issue to <https://github.com/g0v/kuansim/issues>
+
 # Setup in debian/ubuntu
 *   Add postgresql apt repository. You need to change `squeeze` to your distribution codename. You can get your system codename by `lsb_release -c`.
 
