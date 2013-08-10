@@ -19,8 +19,8 @@ scripts:
     env PATH="./node_modules/.bin:$PATH" lsc -cj package.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
-    if [ -e config.ls ]; then 
-        env PATH="./node_modules/.bin:$PATH" lsc -cj config.ls 
+    if [ -e config.ls ]; then
+        env PATH="./node_modules/.bin:$PATH" lsc -cj config.ls
     fi
   """
   postinstall: """
