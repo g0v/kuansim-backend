@@ -48,7 +48,7 @@ See [git-flow cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/)
 
 *   Import database schema
 
-        psql -U postgres -f kuansim.sql
+        psql -U postgres kuansim -f kuansim.sql
 
 *   Install node.js modules
 
