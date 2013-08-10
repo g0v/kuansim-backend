@@ -3,6 +3,7 @@
 # Site
 host: "http://localhost:3000"
 schema: "kuansim"
+db: "tcp://postgres@localhost/kuansim",
 contact:
   name: "Chen Hsin-Yi"
   email: "test@null.com"
