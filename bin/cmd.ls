@@ -26,7 +26,7 @@ plx <- pgrest .new conString, meta: do
 {mount-default, mount-auth, with-prefix} = pgrest.routes!
 
 process.exit 0 if argv.boot
-{port=3000, prefix="/collections", host="127.0.0.1"} = argv
+{port=3000, prefix="/collections", host="0.0.0.0"} = argv
 express = try require \express
 throw "express required for starting server" unless express
 app = express!
