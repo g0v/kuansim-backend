@@ -1,99 +1,59 @@
-pgrest
-======
+# kuansim-backend
+*   master [![Build Status](https://travis-ci.org/g0v/kuansim-backend.png?branch=master)](https://travis-ci.org/g0v/kuansim-backend)
+*   develop [![Build Status](https://travis-ci.org/g0v/kuansim-backend.png?branch=develop)](https://travis-ci.org/g0v/kuansim-backend)
 
-[![Build Status](https://travis-ci.org/g0v/kuansim-backend.png?branch=master)](https://travis-ci.org/g0v/kuansim-backend)
+# Branch Rules
+See [git-flow cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/)
 
-WARNING: this is work in progress and everything is likely to change!
+*   All new code shall be push to `develop` branch
+*   Release manager will merge `develop` to `master`
 
-# Slides in lieu of a proper documentation
+# Setup in debian/ubuntu
+*   Add postgresql apt repository. You need to change `squeeze` to your distribution codename. You can get your system codename by `lsb_release -c`.
 
-<http://www.audreyt.org/newdict/jekyller/_public/>
+        sudo sh -c "echo deb http://apt.postgresql.org/pub/repos/apt/ squeeze-pgdg main > /etc/apt/sources.list.d/postgresql.list"
 
-The first section describes plv8x, and the later sections has some real-world
-examples such as:
+*   Add apt repository key
 
-<http://www.audreyt.org/newdict/jekyller/_public/?full#pgrest-mongolab-api-server>
+        wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
 
-# PgREST is...
+*   Update and install packages
 
-* a JSON document store
-* running inside PostgreSQL
-* working with existing relational data
-* capable of loading Node.js modules
-* compatible with MongoLab's REST API
+        sudo apt-get update
+        sudo apt-get install postgresql-9.2 postgresql-9.2-plv8 postgresql-server-dev-9.2
 
-# Install plv8js extension for postgresql
+*   Update postgresql configuration
 
-Note: Requires postgresql 9.1 or later.  9.0 will be supported soon.
+    Edit /etc/postgresql/9.2/main/pg_hba.conf. Remove the line `local all postgres peer`, and add the following lines.
 
-```
-# for older distros: sudo add-apt-repository ppa:martinkl/ppa
-sudo apt-get install libv8-dev
+        #local   all             postgres                                peer
+        local   all             postgres                                trust
+        host    all             postgres        127.0.0.1/32            trust
 
-sudo easy_install pgxnclient
-sudo pgxn install plv8
-```
+*   Restart postgresql service
 
-# Try pgrest:
+        sudo service postgresql restart
 
-```
-npm i
-npm run prepublish
+*   Test postgresql
 
-./node_modules/.bin/plv8x --db tcp://localhost/MYDB --import pgrest:./package.json
-./node_modules/.bin/plv8x --db tcp://localhost/MYDB --inject 'plv8x_json pgrest_select(plv8x_json)=pgrest:pgrest_select'
+        psql -U postgres
 
-# then this will give you json representation of "sometable":
-MYDB=$ select pgrest_select('{"collection": "sometable", "l": 10}');
-```
+*   Create kuansim database
 
-The parameter is similar to MongoLab's REST API for listing documents:
-https://support.mongolab.com/entries/20433053-rest-api-for-mongodb
+        createdb kuansim -U postgres
 
-# Run test:
+*   Create plv8 extension
 
-```
-createdb test
-export TESTDBUSERNAME=postgres # optional
-export TESTDBNAME=test
-npm i
-npm run test
-```
+        psql -U postgres -c "create extension plv8"
 
-# Set auth
+*   Import database schema
 
-it supports 3 auth provider
+        psql -U postgres kuansim -f kuansim.sql
 
-- facebook-openid
-- twitter-oauth
-- google-oauth
+*   Install node.js modules
 
-create a config
+        npm install
 
-```
-mv config.ls.template config.ls
-```
-
-modify config.ls to add provider keys.
-```
-enable_auth: true
-logout_redirect: "/"
-auth_providers:
-  facebook:
-    clientID: "app id"
-    clientSecret: "app key"
-  twitter:
-    consumerKey: null
-    consumerSecret: null
-  google:
-    consumerKey: null
-    consumerSecret: null
-
-``
-
-re-compile
-
-```
-npm run prepublish
-```
-
+# Reference
+*   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
+*   [How to install PostgreSQL on Ubuntu 13.04?](http://askubuntu.com/questions/287786/how-to-install-postgresql-on-ubuntu-13-04)

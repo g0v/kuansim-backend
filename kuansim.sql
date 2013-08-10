@@ -9,7 +9,7 @@ CREATE TABLE users (
        emails JSON,
        photos JSON,
        tokens JSON,
-       prefer_poston TEXT DEFAULT "kuansim",
+       prefer_poston TEXT,
        subscriptions JSON
 );
 
