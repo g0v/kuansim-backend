@@ -54,6 +54,10 @@ See [git-flow cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/)
 
         npm install
 
+*   Run server
+
+        npm start
+
 # Reference
 *   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
 *   [How to install PostgreSQL on Ubuntu 13.04?](http://askubuntu.com/questions/287786/how-to-install-postgresql-on-ubuntu-13-04)
