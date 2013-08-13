@@ -62,6 +62,8 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
         npm start
         
 FAQ:
+*   If `npm install` failed, try to update node.js version (v0.6.12 is not enough). 
+    See reference [How to upgrade the Node.js version?](http://theholmesoffice.com/node-js-fundamentals-how-to-upgrade-the-node-js-version/)
 
 *	if `npm start` failed in searching "cannot find ../config.log"
 
@@ -89,3 +91,4 @@ FAQ:
 # Reference
 *   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
 *   [How to install PostgreSQL on Ubuntu 13.04?](http://askubuntu.com/questions/287786/how-to-install-postgresql-on-ubuntu-13-04)
+*   [How to upgrade the Node.js version?](http://theholmesoffice.com/node-js-fundamentals-how-to-upgrade-the-node-js-version/)
