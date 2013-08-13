@@ -60,6 +60,31 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 *   Run server
 
         npm start
+        
+FAQ:
+
+*	if `npm start` failed in searching "cannot find ../config.log"
+
+    \> cp config.ls.template config.ls
+
+*	when asking for facebook/tweeter/google\'s  api key/pass. change following lines in `config.ls`
+
+```{.javascript .numberLines}
+	auth_providers:
+	  facebook:
+	      clientID: "223074367841889"
+	      clientSecret: "e40b54d17e245b956efa85a0c4c34497"
+#  twitter:
+#    consumerKey: null
+#    consumerSecret: null
+#  google:
+#    consumerKey: null
+#    consumerSecret: null
+```
+
+* make sure `postgresql` is running, and no other npm server running, apply for facebook app developer from hychen 
+
+	> http://localhost:3000/isauthz will see your public profile
 
 # Reference
 *   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
