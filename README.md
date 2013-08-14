@@ -62,16 +62,16 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 ## Setup Node.js
 *   Use `node --version` to check the version. The version shall be >= v0.10.
     *   ubuntu user can use [PPA](https://launchpad.net/~chris-lea/+archive/node.js/) to install Node.js
-```
-sudo add-apt-repository ppa:chris-lea/node.js
-sudo apt-get update
-sudo apt-get install nodejs
-```
+
+        sudo add-apt-repository ppa:chris-lea/node.js
+        sudo apt-get update
+        sudo apt-get install nodejs
+
     *   Other platform can use [node version manager](https://npmjs.org/package/n) to upgrade Node.js.
-```
-sudo npm install -g n
-sudo n stable
-```
+
+        sudo npm install -g n
+        sudo n stable
+
 *   Install node.js modules
 
         npm install
