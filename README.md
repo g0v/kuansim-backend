@@ -11,7 +11,12 @@ See [git-flow cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/)
 # Report Issue
 Please report issue to <https://github.com/g0v/kuansim/issues>
 
+# Setup EditorConfig
+*   Setup [EditorConfig](http://editorconfig.org/) to ensure consistently coding style.
+
 # Setup in debian/ubuntu
+
+## Setup PostgreSQL
 *   Add postgresql apt repository. You need to change `squeeze` to your distribution codename. You can get your system codename by `lsb_release -c`.
 
         sudo sh -c "echo deb http://apt.postgresql.org/pub/repos/apt/ squeeze-pgdg main > /etc/apt/sources.list.d/postgresql.list"
@@ -53,6 +58,20 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 
         psql -U postgres kuansim -f kuansim.sql
 
+
+## Setup Node.js
+*   Use `node --version` to check the version. The version shall be >= v0.10.
+    *   ubuntu user can use [PPA](https://launchpad.net/~chris-lea/+archive/node.js/) to install Node.js
+```
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+```
+    *   Other platform can use [node version manager](https://npmjs.org/package/n) to upgrade Node.js.
+```
+sudo npm install -g n
+sudo n stable
+```
 *   Install node.js modules
 
         npm install
@@ -60,22 +79,19 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 *   Run server
 
         npm start
-        
-FAQ:
-*   If `npm install` failed, try to update node.js version (v0.6.12 is not enough). 
-    See reference [How to upgrade the Node.js version?](http://theholmesoffice.com/node-js-fundamentals-how-to-upgrade-the-node-js-version/)
 
-*	if `npm start` failed in searching "cannot find ../config.log"
+# FAQ
+*   if `npm start` failed in searching "cannot find ../config.log"
 
     \> cp config.ls.template config.ls
 
-*	when asking for facebook/tweeter/google\'s  api key/pass. change following lines in `config.ls`
+*   when asking for facebook/tweeter/google\'s  api key/pass. change following lines in `config.ls`
 
 ```{.javascript .numberLines}
-	auth_providers:
-	  facebook:
-	      clientID: "223074367841889"
-	      clientSecret: "e40b54d17e245b956efa85a0c4c34497"
+    auth_providers:
+      facebook:
+          clientID: "223074367841889"
+          clientSecret: "e40b54d17e245b956efa85a0c4c34497"
 #  twitter:
 #    consumerKey: null
 #    consumerSecret: null
@@ -84,9 +100,9 @@ FAQ:
 #    consumerSecret: null
 ```
 
-* make sure `postgresql` is running, and no other npm server running, apply for facebook app developer from hychen 
+*   make sure `postgresql` is running, and no other npm server running, apply for facebook app developer from hychen
 
-	> http://localhost:3000/isauthz will see your public profile
+    > http://localhost:3000/isauthz will see your public profile
 
 # Reference
 *   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
