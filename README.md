@@ -102,10 +102,9 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 
 *   make sure `postgresql` is running, and no other npm server running, apply for facebook app developer from hychen
 
-    1. visit <http://localhost:3000/auth/facebook>
-    1. then visit <http://localhost:3000/isauthz>
+	\> visit <http://localhost:3000/auth/facebook>, then visit <http://localhost:3000/isauthz>
 	
-	then you shall see your facebook public profile
+	\> you shall now see your facebook public profile
 	
 # install PostgreSQL + plv8 on MAC
 
