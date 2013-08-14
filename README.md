@@ -85,7 +85,7 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 
     \> cp config.ls.template config.ls
 
-*   when asking for facebook/tweeter/google\'s  api key/pass. change following lines in `config.ls`
+*   when asking for facebook/tweeter/google's  api key/pass. change following lines in `config.ls`
 
 ```{.javascript .numberLines}
     auth_providers:
@@ -102,7 +102,24 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 
 *   make sure `postgresql` is running, and no other npm server running, apply for facebook app developer from hychen
 
-    > http://localhost:3000/isauthz will see your public profile
+    1. visit <http://localhost:3000/auth/facebook>
+    1. then visit <http://localhost:3000/isauthz>
+	
+	then you shall see your facebook public profile
+	
+# install PostgreSQL + plv8 on MAC
+
+* install PostgreSQL App <http://postgresapp.com/>
+* install 3.18.2 v8 (Assume using Homebrew) (don't use default 3.19)
+  
+```
+	cd /usr/local
+	git checkout -b v8 db3bdb1
+	brew install v8 
+	git checkout master
+```
+
+* the rest steps are similar to those of ubuntu's
 
 # Reference
 *   [PostgreSQL packages for Debian and Ubuntu](https://wiki.postgresql.org/wiki/Apt)
