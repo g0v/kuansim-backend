@@ -3,7 +3,6 @@
 define-user-views = (plx, schema, names) ->
   names.map ->
     name = it
-    console.log name
     sql = """
     CREATE OR REPLACE VIEW #{schema}.#{name} AS
       SELECT * FROM public.#{name};
