@@ -11,7 +11,7 @@ define-user-views = (plx, schema, names) ->
     <- plx.query sql
 
 export function bootstrap(plx, cb)
-  next <- plx.import-bundle-funcs \lfrest require.resolve \../package.json
+  next <- plx.import-bundle-funcs \kuansim require.resolve \../package.json
 
   <- plx.query """
   DO $$
