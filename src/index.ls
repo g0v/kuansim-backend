@@ -27,6 +27,28 @@ export function bootstrap(plx, cb)
   END
   $$;
 
+--- Users
+
+      CREATE TABLE IF NOT EXISTS users (
+        _id SERIAL UNIQUE,
+        provider_name TEXT NOT NULL,
+        provider_id TEXT NOT NULL,
+        username TEXT,
+        name JSON,
+        display_name TEXT,
+        emails JSON,
+        photos JSON,
+        tokens JSON
+    );
+
+--- User Preferences
+
+CREATE TABLE IF NOT EXISTS user_prefs (
+        user_id INTEGER REFERENCES USERS(_id),
+        prefer_poston TEXT,
+        subscriptions JSON
+    );
+
 -- Bookmarks
 CREATE TABLE IF NOT EXISTS bookmarks (
        _id SERIAL UNIQUE,
