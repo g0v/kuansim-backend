@@ -3,6 +3,7 @@
 define-user-views = (plx, schema, names) ->
   names.map ->
     name = it
+    console.log name
     sql = """
     CREATE OR REPLACE VIEW #{schema}.#{name} AS
       SELECT * FROM public.#{name};
@@ -30,8 +31,8 @@ export function bootstrap(plx, cb)
 
       CREATE TABLE IF NOT EXISTS users (
         _id SERIAL UNIQUE,
-        provider_name TEXT NOT NULL,
-        provider_id TEXT NOT NULL,
+        authorization_provider TEXT NOT NULL,
+        authorization_id TEXT NOT NULL,
         username TEXT,
         name JSON,
         display_name TEXT,
