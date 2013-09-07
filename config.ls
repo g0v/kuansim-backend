@@ -27,7 +27,7 @@ prefix: "/collections"
 #    as: 'public.initiative'
 
 dbconn: "tcp://postgres@localhost"
-dbname: "mydb"
+dbname: "kuansim"
 dbschema: "kuansim"
 
 #-------------------------------
