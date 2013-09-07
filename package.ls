@@ -1,23 +1,23 @@
 #!/usr/bin/env lsc -cj
 author:
-  name: ['Chia-liang Kao']
-  email: 'clkao@clkao.org'
-name: 'pgrest'
-description: 'enable REST in postgres'
-version: '0.0.5'
+  name: ['Chen Hsin-Yi']
+  email: 'ossug.hychen@gmail.com'
+name: 'kuansim-backend'
+description: 'Kuansim Backend'
+version: '0.0.1'
 main: \lib/index.js
 bin:
-  pgrest: 'bin/cmd.js'
+  kuansim: 'bin/app.js'
 repository:
   type: 'git'
-  url: 'git://github.com/clkao/pgrest.git'
+  url: 'git://github.com/g0v/kuansim-backend.git'
 scripts:
   test: """
     env PATH="./node_modules/.bin:$PATH" mocha
   """
   prepublish: """
     env PATH="./node_modules/.bin:$PATH" lsc -cj package.ls &&
-    env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
+    env PATH="./node_modules/.bin:$PATH" lsc -bc bin/app.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
     if [ -e config.ls ]; then
         env PATH="./node_modules/.bin:$PATH" lsc -cj config.ls
@@ -25,15 +25,16 @@ scripts:
   """
   postinstall: """
     env PATH="./node_modules/.bin:$PATH" lsc -cj package.ls &&
-    env PATH="./node_modules/.bin:$PATH" lsc -bc bin &&
+    env PATH="./node_modules/.bin:$PATH" lsc -bc bin/app.ls &&
     env PATH="./node_modules/.bin:$PATH" lsc -bc -o lib src
   """
   start:"""
     env PATH="./node_modules/.bin:$PATH" npm run prepublish
-    env PATH="./node_modules/.bin:$PATH" ./node_modules/.bin/lsc bin/cmd.ls
+    env PATH="./node_modules/.bin:$PATH" ./node_modules/.bin/lsc bin/app.ls --config config.json
   """
 engines: {node: '*'}
 dependencies:
+  pgrest: 'git://github.com/clkao/pgrest.git#feature/auth'
   optimist: \0.3.x
   trycatch: \0.2.x
   plv8x: \0.5.x
