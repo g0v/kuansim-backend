@@ -35,7 +35,7 @@ dbschema: "kuansim"
 #-------------------------------
 auth:
   enable: true
-  success_redirect: "/"
+  success_redirect: "/me"
   logout_redirect: "/"
   # Active auth plugins
   plugins: ['facebook']
