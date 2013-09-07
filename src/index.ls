@@ -108,8 +108,11 @@ CREATE TABLE IF NOT EXISTS messages (
 
   """
   next ->
-    define-user-views plx, \kuansim, ['users', 'bookmarks', 'tags', 'news', 'webpages']
+    define-user-views plx, \kuansim, ['bookmarks', 'tags', 'news', 'webpages']
     <- plx.query """
+      CREATE OR REPLACE VIEW kuansim.users AS
+      SELECT _id, username, photos FROM public.users;
+      
       CREATE OR REPLACE VIEW kuansim.inbox AS
       WITH auth as (select pgrest_getauth() as auth_id)
       SELECT * FROM public.bookmarks WHERE in_inbox=true AND author_id=(SELECT auth_id FROM auth);
