@@ -1,5 +1,28 @@
 {pgrest_param_get, pgrest_param_set} = require \pgrest
 
+export function get-auth-user(plx, token, tokenSecret, profile, done)
+    user = do
+      authorization_provider: profile.provider
+      authorization_id: profile.id
+      username: profile.username
+      name: profile.name
+      emails: profile.emails
+      photos: profile.photos
+    console.log "user #{user.username} authzed by #{user.provider_name}.#{user.authorization_id}"
+    param = [collection: \users, q:{authorization_id:user.authorization_id, authorization_provider:user.authorization_provider}]
+    [pgrest_select:res] <- plx.query "select pgrest_select($1)", param
+    if res.paging.count == 0
+      [pgrest_insert:res] <- plx.query "select pgrest_insert($1)", [collection: \users, $: [user]]
+    [pgrest_select:res] <- plx.query "select pgrest_select($1)", param
+    user.auth_id = res.entries[0]['_id']
+    done user
+
+export function mk-get-auth-user(plx)
+  (token, tokenSecret, profile, done) ->
+    user <- get-auth-user plx, token, tokenSecret, profile
+    console.log user
+    done null, user
+
 define-user-views = (plx, schema, names) ->
   names.map ->
     name = it
