@@ -54,11 +54,6 @@ Please report issue to <https://github.com/g0v/kuansim/issues>
 
         psql -U postgres -c "create extension plv8"
 
-*   Import database schema
-
-        psql -U postgres kuansim -f kuansim.sql
-
-
 ## Setup Node.js
 *   Use `node --version` to check the version. The version shall be >= v0.10.
     *   ubuntu user can use [PPA](https://launchpad.net/~chris-lea/+archive/node.js/) to install Node.js
