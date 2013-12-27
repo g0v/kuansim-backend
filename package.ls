@@ -34,7 +34,8 @@ scripts:
   """
 engines: {node: '*'}
 dependencies:
-  pgrest: \0.0.x 
+  pgrest: \0.1.x
+  'pgrest-passport': \0.0.x
   optimist: \0.3.x
   trycatch: \0.2.x
   plv8x: \0.5.x
