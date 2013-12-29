@@ -39,7 +39,7 @@ dependencies:
   optimist: \0.3.x
   trycatch: \0.2.x
   plv8x: \0.5.x
-  express: \3.1.x
+  express: \3.4.x
   cors: \0.0.x
   \connect-csv : \*
   passport: \*
