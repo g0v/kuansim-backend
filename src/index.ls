@@ -133,12 +133,9 @@ CREATE TABLE IF NOT EXISTS messages (
   next ->
     define-user-views plx, \kuansim, ['bookmarks', 'tags', 'news', 'webpages']
     <- plx.query """
-      CREATE OR REPLACE VIEW kuansim.users AS
-      SELECT _id, username, photos FROM public.users;
-
       CREATE OR REPLACE RULE tags_add AS ON INSERT TO kuansim.tags
       DO INSTEAD
       WITH auth as (select pgrest_getauth() as auth_id)
-      INSERT INTO public.tags (name, author_id) VALUES(NEW.name, (SELECT auth_id FROM auth));      
+      INSERT INTO public.tags (name, author_id) VALUES(NEW.name, (SELECT auth_id FROM auth));
     """
     cb!

@@ -1,9 +1,12 @@
 ``#!/usr/bin/env node``
+{meta} = require \../lib/meta
 require! pgrest
 pgrest-passport = require \pgrest-passport
 pgrest.use pgrest-passport
 
-app <- pgrest.cli! {}, {}, [],  require \../lib
+opts = pgrest.get-opts!! <<< {meta}
+
+app <- pgrest.cli! opts, {}, [],  require \../lib
 
 app.get '/me', (req, res) ->
   if req.isAuthenticated!
