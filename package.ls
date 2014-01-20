@@ -47,7 +47,7 @@ dependencies:
   'passport-twitter': \*
   'passport-google-oauth': \*
 devDependencies:
-  mocha: \*
+  mocha: \1.14.x
   supertest: \0.7.x
   chai: \*
   LiveScript: \1.1.1
